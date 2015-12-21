@@ -5,6 +5,7 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [org.clojure/tools.cli "0.3.3"]
+                 [postgresql "9.1-901.jdbc4"]
                  [rill-event-sourcing/rill.event_store.psql "0.2.1"]
                  [rill-event-sourcing/rill.event_store.memory "0.2.1"]]
   :main ^:skip-aot rill.event_store_benchmark
