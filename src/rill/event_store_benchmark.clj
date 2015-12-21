@@ -4,7 +4,6 @@
             [rill.event-store.memory :refer [memory-store]]
             [rill.event-store.psql :refer [psql-event-store]]
             [rill.event-store.psql.tools :as psql-tools]
-            [rill.event-store.psql.tools :as tools]
             [rill.message :refer [defmessage]]
             [schema.core :as s])
   (:gen-class))
@@ -26,16 +25,19 @@
   :stream-number s/Int
   :event-number s/Int)
 
+(defn get-postgres-store
+  [])
+
 (defn get-store
   [connector config]
   (case connector
     "memory" (memory-store)
-    "postgres" (psql-event-store (psql-tools/connection config))))
+    "postgres" (do (psql-tools/load-schema! config)
+                   (psql-event-store (psql-tools/connection config)))))
 
 (defn run-benchmark
   [store {:keys [events streams]}]
   (time (doseq [s (range streams) e (range events)]
-          (prn [s e])
           (assert (append-events store (str s) (dec e) [(tick s e)])))))
 
 (defn -main
